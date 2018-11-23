@@ -12,7 +12,7 @@ w = 1       # Beam radius
 z = 1       # Z coordinate... Not used anywhere in calculations?
 l = 4       # Azimuthal Laguerre index
 p = 2       # Radial Laguerre index
-A0 = 1      # ??
+A0 = 1      # Initial magnitude
 
 def rho(x,y):
     """
@@ -83,16 +83,20 @@ def I(x, y, l, p):
 
 # Construct a 2D space normal to the beam axis,
 # over which we evaluate the beam intensity
-x = np.linspace(-4,4,500)
+x = np.linspace(-4,4,1000)
 y = x
 X, Y = np.meshgrid(x,y)
 
 plt.figure()
-plt.pcolor(X,Y, I(X,Y,l,p), cmap='gray')
+plt.pcolor(X,Y, I(X,Y,l,p), cmap='PuBuGn')
 
-plt.title(r"Optical vortex intensity cross section z={}".format(z))
+plt.colorbar(label = "Intensity")
+plt.title("Optical vortex intensity cross section z={}".format(z))
+plt.xlabel('x')
+plt.ylabel('y')
 
 ax = plt.gca()
 ax.set_aspect('equal', adjustable='box')
 
+plt.savefig('intensity.png', dpi=500)
 plt.show()
