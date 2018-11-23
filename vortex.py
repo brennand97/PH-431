@@ -12,15 +12,56 @@ p = 2
 A0 = 1
 
 def rho(x,y):
+    """
+    Return the length of a vector defined on a 2D cartesian plane (like xi + yj).
+
+    ### Parameters:
+    x, y: float
+    Vector components.
+
+    ### Return Type:
+    r: float
+    Length of vector.
+    """
     return np.sqrt(x**2+y**2) 
 
 def u(x, y, l, p):
+    """
+    Evaluates the amplitude of a helical beam using equation 1 from Sundbeck; a special case of "Laguerre-Gaussian eigenmodes of the Helmholtz equation."
+
+    Parameters:
+    x, y: float
+    Cartesian coordinates in a 2D plane, where the optical axis normal to the plane.
+
+    l: int
+    Azimuthal index of the generalized Laguerre polynomial. Also called the helicity, or topological charge of the beam.
+
+    p: int
+    Radial index of the generalized Laguerre polynomial.
+
+    Returns:
+    u: float
+    Real-valued amplitude of a helical beam at coordinates x, y.
+
+    References:
+    Steven Sundbeck, Ilya Gruzberg, and David G. Grier, "Structure and scaling of helical modes of light," Opt. Lett. 30, 477-479 (2005)
+    """
+
+    # Helical beam has a radially symmetrical amplitude,
+    # so the amplitude function is only dependent on the
+    # distance from the origin to the x, y coordinates.
     r = rho(x,y)
+
+    # Evaluate the equation from Sundbeck.
     return (-1)**p * (np.sqrt(2) * r/w)**l * \
         sp.genlaguerre(p, l)(2 * r**2 / w**2) * \
         np.exp(- r**2 / w**2)
 
 def I(x, y, l, p): 
+    """
+    Did we derive this, or did it come from Sundbeck eqn 6?
+    """
+    
     return 0.5 / (mu * c) * A0**2 * ( u(x, y, l, p) )**2
 
 x = np.linspace(-4,4,500)
