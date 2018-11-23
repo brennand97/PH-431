@@ -2,14 +2,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import special as sp
 
-mu = 1
-e0 = 1
-c = 1
-w = 1
-z = 1
-l = 4
-p = 2
-A0 = 1
+# Physical constants
+mu = 1      # Vacuum permeability
+e0 = 1      # Vacuum permittivity
+c = 1       # Speed of light
+
+# Beam parameters
+w = 1       # Beam radius
+z = 1       # Z coordinate... Not used anywhere in calculations?
+l = 4       # Azimuthal Laguerre index
+p = 2       # Radial Laguerre index
+A0 = 1      # ??
 
 def rho(x,y):
     """
@@ -27,7 +30,7 @@ def rho(x,y):
 
 def u(x, y, l, p):
     """
-    Evaluates the amplitude of a helical beam using equation 1 from Sundbeck; a special case of "Laguerre-Gaussian eigenmodes of the Helmholtz equation."
+    Evaluates the amplitude of a helical beam, at coordinates x, y relative to the beam's axis using equation 1 from Sundbeck; a special case of "Laguerre-Gaussian eigenmodes of the Helmholtz equation."
 
     Parameters:
     x, y: float
@@ -59,14 +62,31 @@ def u(x, y, l, p):
 
 def I(x, y, l, p): 
     """
-    Did we derive this, or did it come from Sundbeck eqn 6?
+    Evaluates the electromagnetic intensity of a helical beam at coordinates x, y relative to the beam's axis.
+
+    Parameters:
+    x, y: float
+    Cartesian coordinates in a 2D plane, where the optical axis normal to the plane.
+
+    l: int
+    Azimuthal index of the generalized Laguerre polynomial. Also called the helicity, or topological charge of the beam.
+
+    p: int
+    Radial index of the generalized Laguerre polynomial.
+
+    Returns:
+    I: float
+    Electromagnetic intensity of a helical beam at coordinates x, y.
     """
     
     return 0.5 / (mu * c) * A0**2 * ( u(x, y, l, p) )**2
 
+# Construct a 2D space normal to the beam axis,
+# over which we evaluate the beam intensity
 x = np.linspace(-4,4,500)
 y = x
-X,Y = np.meshgrid(x,y) 
+X, Y = np.meshgrid(x,y)
+
 plt.figure()
 plt.pcolor(X,Y, I(X,Y,l,p), cmap='gray')
 
