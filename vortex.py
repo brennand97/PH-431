@@ -105,10 +105,14 @@ def B_mag(x, y, l, p):
 
 def E(x, y, l, p):
     mag = E_mag(x, y, l, p)
+    ang = np.arctan2(y, x)
+    #return np.cos(ang) * mag, np.sin(ang) * mag
     return E_u[0] * mag, E_u[1] * mag
 
 def B(x, y, l, p):
     mag = B_mag(x, y, l, p)
+    ang = np.arctan2(y, x)
+    #return np.cos(ang + np.pi/2) * mag, np.sin(ang + np.pi/2) * mag
     return B_u[0] * mag, B_u[1] * mag
 
 # Construct a 2D space normal to the beam axis,
@@ -179,7 +183,7 @@ plt.savefig('b_mag.png', dpi=500)
 
 
 
-x = np.linspace(-4,4,200)
+x = np.linspace(-4,4,100)
 y = x
 X, Y = np.meshgrid(x,y)
 
